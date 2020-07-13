@@ -1,7 +1,6 @@
 package com.ksintership.kozhushanmariia.activity;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 
@@ -11,14 +10,15 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ksintership.kozhushanmariia.R;
+
+import com.ksintership.kozhushanmariia.template.BaseActivity;
 import com.ksintership.kozhushanmariia.utils.Constants;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private AppCompatEditText inputTextField;
     private AppCompatButton sendTextBtn;
@@ -27,10 +27,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_constraint_layout);
 
         setViewsId();
         setOnAction();
+        createBaseToolbar(getString(R.string.app_name));
     }
 
     private void setViewsId() {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOnAction() {
-        inputTextField.setTextColor(getResources().getColor(R.color.colorPrimary));
+        inputTextField.setTextColor(getResources().getColor(R.color.primary));
         sendTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void handleSendTextBtn() {
         Editable getText = inputTextField.getText();
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(sendTextIntent, Constants.REQUEST_CODE);
 
         }
-
     }
 
     @Override
@@ -75,6 +74,5 @@ public class MainActivity extends AppCompatActivity {
         } else inputTextField.setText("");
 
     }
-
 
 }
