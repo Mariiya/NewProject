@@ -1,4 +1,4 @@
-package com.ksintership.kozhushanmariia.template;
+package com.ksintership.kozhushanmariia.activity;
 
 import android.view.View;
 import android.widget.Toast;

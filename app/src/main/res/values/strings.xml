@@ -6,7 +6,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="input_main_activity">Input some nice words</string>
-    <string name="hello_main_activity">Welcome to Main Activity</string>
+    <string name="title_main_activity">Welcome to MovieMeadow!\nChoose genre of the film!</string>
     <string name="app_information">Don\'t worry be happy </string>
     <string name="send_btn">Send</string>
     <string name="empty_text_field_error">Enter text</string>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FragmentChooser">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_main_layout"
+        style="@style/AppTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/title_main_activity"
+        android:textSize="@dimen/title_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_comedy"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="COMEDY" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_documentary"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="DOCUMENTARY" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_drama"
+                style="@style/ChooseButton"
+                android:layout_width="174dp"
+                android:layout_height="wrap_content"
+                android:text="DRAMA" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_horror"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HORROR" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_adventure"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ADVENTURE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_thriller"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="THRILLER" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_musical"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MUSICAL" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cartoon"
+                style="@style/ChooseButton"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:text="CARTOON" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_detective"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DETECTIVE" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_fantasy"
+                style="@style/ChooseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FANTASY" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
