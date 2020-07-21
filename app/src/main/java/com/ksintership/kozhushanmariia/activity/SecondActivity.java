@@ -1,39 +1,30 @@
 package com.ksintership.kozhushanmariia.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-
-import android.util.Log;
-import android.view.View;
-
 import com.ksintership.kozhushanmariia.R;
+import com.ksintership.kozhushanmariia.fragments.FragmentViewer;
 import com.ksintership.kozhushanmariia.utils.Constants;
 
 public class SecondActivity extends BaseActivity {
 
-    private final static String LOG_TAG = SecondActivity.class.getSimpleName();
-    private AppCompatButton okBtn;
-    private AppCompatButton cancelBtn;
-    private AppCompatTextView inputText;
-    String inputStr;
+    private FragmentViewer fragmentViewer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        int resIdToDisplay = getIntent().getIntExtra(Constants.KEY_IM_ID, -1);
+        String name = getIntent().getStringExtra(Constants.KEY_NM_ID);
+        int year = getIntent().getIntExtra(Constants.KEY_YR_ID, 0);
+        String genre = getIntent().getStringExtra(Constants.KEY_GR_ID);
 
-        setViewsId();
-        if (getIntent().getExtras() != null) {
-            inputStr = getIntent().getStringExtra(Constants.EXTRA_SEND_TEXT);
-            inputText.setText(inputStr);
-        }
-        createToolbarWithBackBtn(getString(R.string.title_activity_second));
-        setOnAction();
-
+        String description = getIntent().getStringExtra(Constants.KEY_DC_ID);
+        double rating = getIntent().getDoubleExtra(Constants.KEY_RT_ID, 0);
+        fragmentViewer = (FragmentViewer) getSupportFragmentManager().findFragmentById(R.id.fragment_two);
+        fragmentViewer.displayResource(resIdToDisplay, name, genre, rating, year, description);
+        createToolbarWithBackBtn(name);
     }
 
     private void setViewsId() {
@@ -43,7 +34,6 @@ public class SecondActivity extends BaseActivity {
     private void setOnAction() {
 
     }
-
 
 
 }

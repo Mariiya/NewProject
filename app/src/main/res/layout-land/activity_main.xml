@@ -4,24 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SecondActivity">
+    tools:context=".activity.MainActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout" />
 
+    <fragment
+        android:id="@+id/fragment_one"
+        android:name="com.ksintership.kozhushanmariia.fragments.FragmentChooser"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <fragment
         android:id="@+id/fragment_two"
         android:name="com.ksintership.kozhushanmariia.fragments.FragmentViewer"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragment_one"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

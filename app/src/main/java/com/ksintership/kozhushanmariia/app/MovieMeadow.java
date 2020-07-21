@@ -1,14 +1,6 @@
 package com.ksintership.kozhushanmariia.app;
 
 import android.app.Application;
-import android.content.res.Configuration;
-import android.util.Log;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.ksintership.kozhushanmariia.R;
-
-import javax.xml.datatype.Duration;
 
 public class MovieMeadow extends Application {
 
@@ -16,9 +8,17 @@ public class MovieMeadow extends Application {
 
     String name;
     Genre genre;
-    float rating;
+    double rating;
     int year;
-    Duration duration;
+    String description;
+
+    public MovieMeadow(String name, Genre genre, double rating, int year, String description) {
+        this.name = name;
+        this.genre = genre;
+        this.rating = rating;
+        this.year = year;
+        this.description = description;
+    }
 
     @Override
     public void onCreate() {
