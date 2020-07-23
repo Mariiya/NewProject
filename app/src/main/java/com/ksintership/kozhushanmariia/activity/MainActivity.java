@@ -102,7 +102,14 @@ public class MainActivity extends BaseActivity {
 
             }
 
+
+            @Override
+            public void openThirdActivity() {
+                Intent viewIntent = new Intent(MainActivity.this, ThirdActivity.class);
+                startActivity(viewIntent);
+            }
         };
+
         fragmentChooser.setPictureSelectListener(genreSelectListener);
 
     }

@@ -1,5 +1,6 @@
 package com.ksintership.kozhushanmariia.activity;
 
+
 import android.view.View;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -40,4 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar.setSubtitle(getResources().getText(R.string.app_subtitle));
     }
 
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 }

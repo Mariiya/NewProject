@@ -1,5 +1,6 @@
 package com.ksintership.kozhushanmariia.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import com.ksintership.kozhushanmariia.app.Genre;
 
 import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.utils.listeners.GenreSelectListener;
@@ -25,6 +25,7 @@ public class FragmentChooser extends Fragment {
     private AppCompatButton cartoonButton;
     private AppCompatButton detectiveButton;
     private AppCompatButton fantasyButton;
+    private AppCompatButton favoritesButton;
 
     public FragmentChooser() {
         // Required empty public constructor
@@ -51,6 +52,7 @@ public class FragmentChooser extends Fragment {
         cartoonButton = v.findViewById(R.id.btn_cartoon);
         detectiveButton = v.findViewById(R.id.btn_detective);
         fantasyButton = v.findViewById(R.id.btn_fantasy);
+favoritesButton=v.findViewById(R.id.favorites_btn);
 
         comedyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +125,12 @@ public class FragmentChooser extends Fragment {
             }
         });
 
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genreSelectListener.openThirdActivity();
+            }
+        });
         return v;
     }
 

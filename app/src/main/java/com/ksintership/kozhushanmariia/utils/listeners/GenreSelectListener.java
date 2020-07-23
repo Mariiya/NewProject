@@ -1,6 +1,10 @@
 package com.ksintership.kozhushanmariia.utils.listeners;
 
+import android.content.Intent;
+
+import com.ksintership.kozhushanmariia.activity.ThirdActivity;
 import com.ksintership.kozhushanmariia.app.Genre;
+import com.ksintership.kozhushanmariia.fragments.FragmentChooser;
 
 public interface GenreSelectListener {
 
@@ -12,4 +16,5 @@ public interface GenreSelectListener {
     void onCARTOONSelected();
     void onDETECTIVESelected();
     void onFANRASYSelected();
+    void openThirdActivity();
 }
