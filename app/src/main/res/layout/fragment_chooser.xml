@@ -8,7 +8,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title_main_layout"
-        style="@style/AppTheme"
+        style="@style/MainTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_margin"
@@ -37,7 +37,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_comedy"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -45,7 +45,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_documentary"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -53,7 +53,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_drama"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -62,7 +62,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_adventure"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -78,7 +78,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_thriller"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -87,7 +87,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_cartoon"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -95,7 +95,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_detective"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
@@ -103,7 +103,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_fantasy"
-                style="@style/ChooseButton"
+                style="@style/MainButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"

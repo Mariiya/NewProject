@@ -15,7 +15,6 @@
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.viewpager.widget.ViewPager
