@@ -8,6 +8,9 @@
         <item name="android:statusBarColor">@color/statusBarColor</item>
         <item name="actionBarStyle">@style/MainToolbarStyle</item>
         <item name="android:textAppearance">@style/MainTextStyle</item>
+        <item name="android:editTextStyle">@style/MainEditTextStyle</item>
+        <item name="editTextStyle">@style/MainEditTextStyle</item>
+        <item name="android:editTextPreferenceStyle">@style/MainEditTextStyle</item>
         <item name="buttonStyle">@style/MainButtonStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -19,13 +22,23 @@
         <item name="android:textColorSecondary">@color/textSecondary</item>
     </style>
 
+    <style name="TextTitleStyle" parent="MainTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="MainButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:background">@drawable/button_bg_main_selector</item>
+        <item name="android:minWidth">@dimen/minButtonWidth</item>
     </style>
 
     <style name="MainToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/windowBackground</item>
+        <item name="android:background">@color/toolbarBackground</item>
         <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="MainEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:imeOptions">flagNoExtractUi</item>
     </style>
 </resources>

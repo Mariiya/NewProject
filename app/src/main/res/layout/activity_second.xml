@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/fragment_two"
-        android:name="com.ksintership.kozhushanmariia.fragments.FragmentViewer"
+        android:name="com.ksintership.kozhushanmariia.fragments.NoteDetailFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
