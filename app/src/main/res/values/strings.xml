@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoteMeadow</string>
+    <string name="app_name">Track finder</string>
     <string name="app_subtitle">KeepSolid Summer Internship</string>
     <string name="title_activity_second">Is this input correct?</string>
     <!-- Strings used for fragments for navigation -->
@@ -12,6 +12,12 @@
     <string name="empty_text_field_error">Enter text</string>
     <string name="cancel_btn">Cancel</string>
     <string name="ok_btn">OK</string>
+
     <string name="debug_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+
+    <string name="settings">Settings</string>
+    <string name="app_version">0.1</string>
+
+    <string name="audio_player_error">Failed to load track preview, try later</string>
 
 </resources>

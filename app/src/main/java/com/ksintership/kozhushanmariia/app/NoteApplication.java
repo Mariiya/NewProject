@@ -2,22 +2,14 @@ package com.ksintership.kozhushanmariia.app;
 
 import android.app.Application;
 
-import com.ksintership.kozhushanmariia.di.AppComponent;
-import com.ksintership.kozhushanmariia.di.AppModule;
-import com.ksintership.kozhushanmariia.di.DaggerAppComponent;
+import com.ksintership.kozhushanmariia.di.AppInjector;
 
 public class NoteApplication extends Application {
-    private static AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this.getApplicationContext()))
-                .build();
+        AppInjector.build(this.getApplicationContext());
     }
 
-    public static AppComponent getAppComponent() {
-        return appComponent;
-    }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/album_cover"
+        android:layout_width="@dimen/coverSizeInDetailFragment"
+        android:layout_height="@dimen/coverSizeInDetailFragment"
+        android:layout_marginTop="@dimen/default_margin"
+        android:src="@drawable/sechsucht_cover_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/track_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_middle_margin"
+        android:text="Engel"
+        android:textAppearance="@style/TextTitleStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album_cover" />
+
+    <TextView
+        android:id="@+id/album_plus_artist_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_small_margin"
+        android:text="Sechsucht - Rammstein"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/track_name" />
+
+    <include
+        android:id="@+id/audio_player"
+        layout="@layout/audio_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_middle_margin"
+        app:layout_constraintTop_toBottomOf="@id/album_plus_artist_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

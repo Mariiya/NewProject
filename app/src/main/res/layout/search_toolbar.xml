@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ksintership.kozhushanmariia.views.SearchToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_height"
+    android:background="@color/toolbarBackground"
+    android:elevation="@dimen/toolbar_elevation"
+    android:padding="@dimen/default_middle_margin"
+    android:visibility="invisible"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible">
+
+    <ImageButton
+        android:id="@+id/search_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_keyboard_backspace_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/search_text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/default_middle_margin"
+        android:layout_marginEnd="@dimen/default_small_margin"
+        android:hint="Search tracks..."
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@id/search_clear"
+        app:layout_constraintStart_toEndOf="@id/search_back" />
+
+    <ImageButton
+        android:id="@+id/search_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_clear_24_white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/search_text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</com.ksintership.kozhushanmariia.views.SearchToolbar>

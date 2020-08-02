@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/searchListFragment">
+
+    <fragment
+        android:id="@+id/searchListFragment"
+        android:name="com.ksintership.kozhushanmariia.fragments.SearchListFragment"
+        android:label="fragment_note_list"
+        tools:layout="@layout/fragment_search_list">
+        <action
+            android:id="@+id/action_noteListFragment_to_fragmentSettings"
+            app:destination="@id/fragmentSettings"
+            app:enterAnim="@anim/slide_from_end"
+            app:exitAnim="@anim/slide_to_start"
+            app:popEnterAnim="@anim/slide_from_start"
+            app:popExitAnim="@anim/slide_to_end" />
+        <action
+            android:id="@+id/action_noteListFragment_to_noteTrackFragment"
+            app:destination="@id/noteDetailFragment"
+            app:enterAnim="@anim/slide_from_end"
+            app:exitAnim="@anim/slide_to_start"
+            app:popEnterAnim="@anim/slide_from_start"
+            app:popExitAnim="@anim/slide_to_end" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentSettings"
+        android:name="com.ksintership.kozhushanmariia.fragments.FragmentSettings"
+        android:label="FragmentSettings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/noteDetailFragment"
+        android:name="com.ksintership.kozhushanmariia.fragments.TrackDetailFragment"
+        android:label="NoteDetailFragment"
+        tools:layout="@layout/fragment_track_detail" />
+</navigation>
