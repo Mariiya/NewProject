@@ -40,9 +40,9 @@ public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
         findViews(rootView);
         initViews();
-        init();
     }
 
     protected abstract void findViews(View root);

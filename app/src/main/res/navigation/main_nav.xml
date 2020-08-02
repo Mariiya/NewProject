@@ -11,14 +11,14 @@
         android:label="fragment_note_list"
         tools:layout="@layout/fragment_search_list">
         <action
-            android:id="@+id/action_noteListFragment_to_fragmentSettings"
+            android:id="@+id/toSettingsFragment"
             app:destination="@id/fragmentSettings"
             app:enterAnim="@anim/slide_from_end"
             app:exitAnim="@anim/slide_to_start"
             app:popEnterAnim="@anim/slide_from_start"
             app:popExitAnim="@anim/slide_to_end" />
         <action
-            android:id="@+id/action_noteListFragment_to_noteTrackFragment"
+            android:id="@+id/toTrackDetailFragment"
             app:destination="@id/noteDetailFragment"
             app:enterAnim="@anim/slide_from_end"
             app:exitAnim="@anim/slide_to_start"
@@ -36,5 +36,10 @@
         android:id="@+id/noteDetailFragment"
         android:name="com.ksintership.kozhushanmariia.fragments.TrackDetailFragment"
         android:label="NoteDetailFragment"
-        tools:layout="@layout/fragment_track_detail" />
+        tools:layout="@layout/fragment_track_detail">
+        <argument
+            android:name="bundle_track_id"
+            app:argType="long" />
+    </fragment>
+
 </navigation>

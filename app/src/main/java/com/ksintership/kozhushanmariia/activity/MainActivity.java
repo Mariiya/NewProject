@@ -66,11 +66,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                navController.navigate(R.id.action_noteListFragment_to_fragmentSettings);
-                toolbar.getMenu().clear();
-                return true;
-            case R.id.test_track_detail:
-                navController.navigate(R.id.action_noteListFragment_to_noteTrackFragment);
+                navController.navigate(R.id.toSettingsFragment);
                 toolbar.getMenu().clear();
                 return true;
         }

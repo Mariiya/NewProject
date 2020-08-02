@@ -1,9 +1,9 @@
 package com.ksintership.kozhushanmariia.contract.listeners;
 
 public interface SearchListener {
-    void onSearchClose();
+    default void onSearchClose(){}
 
     void onSearch(String query);
 
-    void onSearchTextChanged(String query);
+    default void onSearchTextChanged(String query){}
 }

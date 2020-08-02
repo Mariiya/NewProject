@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.contract.IActivity;
+import com.ksintership.kozhushanmariia.contract.listeners.SearchListener;
 import com.ksintership.kozhushanmariia.views.SearchToolbar;
 
 public abstract class BaseActivity extends AppCompatActivity implements IActivity {
@@ -28,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     public void initToolbar(String title, boolean navigationUp) {
         toolbar = findViewById(R.id.toolbar);
+        toolbar.getMenu().clear();
         toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
         toolbarTitle.setText(title);
         if (navigationUp) {
@@ -79,5 +81,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     public void setToolbarVisibility(int visibility) {
         if (toolbar != null) toolbar.setVisibility(visibility);
+    }
+
+    @Override
+    public void hideSearch() {
+        if (searchToolbar != null) {
+            searchToolbar.hide();
+        }
+    }
+
+    @Override
+    public void setSearchListener(SearchListener searchListener) {
+        if (searchToolbar != null) {
+            searchToolbar.setListener(searchListener);
+        }
     }
 }

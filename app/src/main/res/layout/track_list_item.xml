@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/default_margin">
+    android:layout_marginHorizontal="@dimen/default_middle_margin"
+    android:layout_marginVertical="@dimen/default_small_margin">
 
     <ImageView
         android:id="@+id/album_cover"
@@ -19,8 +20,8 @@
         android:id="@+id/track_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_small_margin"
-        android:layout_marginTop="@dimen/default_small_margin"
+        android:layout_marginStart="@dimen/default_middle_margin"
+        android:layout_marginTop="@dimen/default_smaller_margin"
         android:maxLines="1"
         android:textAppearance="@style/TextTitleStyle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,12 +33,12 @@
         android:id="@+id/artist_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_small_margin"
-        android:layout_marginTop="@dimen/default_small_margin"
+        android:layout_marginStart="@dimen/default_middle_margin"
+        android:layout_marginBottom="@dimen/default_smaller_margin"
         android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/album_cover"
-        app:layout_constraintTop_toBottomOf="@id/track_name"
         tools:text="Rammstein" />
 
 </com.ksintership.kozhushanmariia.views.TrackItemView>

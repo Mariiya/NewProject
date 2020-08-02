@@ -19,5 +19,6 @@
     <string name="app_version">0.1</string>
 
     <string name="audio_player_error">Failed to load track preview, try later</string>
+    <string name="search_failure">An unexpected search error ocurred</string>
 
 </resources>

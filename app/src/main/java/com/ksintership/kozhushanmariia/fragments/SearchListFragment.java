@@ -1,21 +1,33 @@
 package com.ksintership.kozhushanmariia.fragments;
 
+import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ksintership.kozhushanmariia.R;
-import com.ksintership.kozhushanmariia.activity.BaseActivity;
+import com.ksintership.kozhushanmariia.contract.IActivity;
+import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
 import com.ksintership.kozhushanmariia.contract.listeners.SearchListener;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
+import com.ksintership.kozhushanmariia.model.TrackModel;
+import com.ksintership.kozhushanmariia.utils.Constants;
 import com.ksintership.kozhushanmariia.utils.adapter.TrackListAdapter;
 import com.ksintership.kozhushanmariia.viewmodels.SearchListViewModel;
 
-public class SearchListFragment extends BaseFragment<SearchListViewModel> implements SearchListener {
+public class SearchListFragment extends BaseFragment<SearchListViewModel> implements SearchListener, TrackListAdapter.OnTrackItemClickListener {
 
     private RecyclerView list;
     private TrackListAdapter adapter;
+
+    private IActivity iActivity;
+    private ShowingInformationFragment showingInfoFragment;
+
+    private NavController navController;
 
     @Override
     protected int getFragmentLayout() {
@@ -29,20 +41,56 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
 
     @Override
     protected void initViews() {
-        ((BaseActivity) getActivity()).getSearchToolbar().setListener(this);
-        adapter = new TrackListAdapter(getContext());
+        adapter = new TrackListAdapter(getContext(), this);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(adapter);
+
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            LinearLayoutManager manager = (LinearLayoutManager) list.getLayoutManager();
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (manager.findLastVisibleItemPosition() == manager.getItemCount() - 4) {
+                    viewModel.reloadTrackList();
+                }
+            }
+        });
     }
 
     @Override
-    public void onSearchClose() {
-        //TODO: not implemented yet
+    protected void init() {
+        super.init();
+        iActivity = (IActivity) getActivity();
+        showingInfoFragment = (ShowingInformationFragment) getActivity();
+        navController = NavHostFragment.findNavController(this);
+
+        iActivity.setSearchListener(this);
+
+        viewModel.init(showingInfoFragment);
+
+        viewModel.getTrackListLd().observe(getViewLifecycleOwner(),
+                trackModels -> {
+                    adapter.setTracks(trackModels);
+                    if (trackModels == null) {
+                        //TODO: realize view stub for empty list
+                    }
+                });
+        viewModel.getShowErrorMessageLd().observe(getViewLifecycleOwner(),
+                showMsg -> ((ShowingInformationFragment) getActivity()).showSnackbar(R.string.search_failure));
+    }
+
+    @Override
+    public void onItemClick(TrackModel trackModel) {
+        iActivity.hideSearch();
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.BUNDLE_TRACK_ID, trackModel.getId());
+        navController.navigate(R.id.toTrackDetailFragment, bundle);
     }
 
     @Override
     public void onSearch(String query) {
-        //TODO: not implemented yet
+        viewModel.search(query);
     }
 
     @Override

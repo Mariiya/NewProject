@@ -7,11 +7,23 @@ import android.widget.TextView;
 import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.activity.BaseActivity;
 import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
+import com.ksintership.kozhushanmariia.di.AppInjector;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
+import com.ksintership.kozhushanmariia.model.TrackModel;
+import com.ksintership.kozhushanmariia.repository.TrackRepository;
+import com.ksintership.kozhushanmariia.utils.Constants;
+import com.ksintership.kozhushanmariia.utils.ViewUtil;
 import com.ksintership.kozhushanmariia.viewmodels.TrackDetailViewModel;
 import com.ksintership.kozhushanmariia.views.AudioPlayer;
 
+import javax.inject.Inject;
+
 public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
+
+    @Inject
+    TrackRepository trackRepository;
+
+    private TrackModel trackModel;
 
     private ImageView albumCover;
     private TextView trackName;
@@ -21,8 +33,15 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
 
     @Override
     protected void initViews() {
-        ((BaseActivity) getActivity()).initToolbar("Track detail", true);
+        ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
         audioPlayer.setShowingInformationFragment((ShowingInformationFragment) getActivity());
+
+        ViewUtil.loadImage(albumCover, trackModel.getAlbumCoverBigUrl(), R.drawable.ic_audiotrack_24);
+        trackName.setText(trackModel.getTrackName());
+        String artistAndAlbumName = trackModel.getArtistName() + " - " + trackModel.getAlbumName();
+        artistPlusAlbumName.setText(artistAndAlbumName);
+
+        audioPlayer.setTrackUrl(trackModel.getTrackPreviewUrl());
     }
 
     @Override
@@ -31,6 +50,17 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
         trackName = root.findViewById(R.id.track_name);
         artistPlusAlbumName = root.findViewById(R.id.album_plus_artist_name);
         audioPlayer = root.findViewById(R.id.audio_player);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        AppInjector.getAppComponent().inject(this);
+        long trackId = -1L;
+        if (getArguments() != null) {
+            trackId = getArguments().getLong(Constants.BUNDLE_TRACK_ID);
+        }
+        trackModel = trackRepository.findTrack(trackId);
     }
 
     @Override

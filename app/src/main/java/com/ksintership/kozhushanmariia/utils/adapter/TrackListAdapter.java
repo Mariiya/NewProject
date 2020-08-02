@@ -22,16 +22,20 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
     private List<TrackModel> tracks;
     private OnTrackItemClickListener onTrackItemClickListener;
 
-    public TrackListAdapter(Context context) {
-        this(context, new ArrayList<>());
+    public TrackListAdapter(Context context, OnTrackItemClickListener onTrackItemClickListener) {
+        this(context, onTrackItemClickListener, new ArrayList<>());
     }
 
-    public TrackListAdapter(Context context, List<TrackModel> tracks) {
+    public TrackListAdapter(Context context,
+                            OnTrackItemClickListener onTrackItemClickListener,
+                            List<TrackModel> tracks) {
         this.tracks = tracks;
+        this.onTrackItemClickListener = onTrackItemClickListener;
         inflater = LayoutInflater.from(context);
     }
 
     public void setTracks(List<TrackModel> tracks) {
+        if (tracks == null) tracks = new ArrayList<>();
         this.tracks = tracks;
         notifyDataSetChanged();
     }

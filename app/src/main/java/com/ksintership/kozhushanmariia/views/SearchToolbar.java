@@ -21,7 +21,7 @@ import com.ksintership.kozhushanmariia.contract.listeners.SearchListener;
 import com.ksintership.kozhushanmariia.utils.ViewUtil;
 
 public class SearchToolbar extends ConstraintLayout {
-    private static final long SHOW_HIDE_ANIMATION_DURATION = 400;
+    private static final long ANIMATION_DURATION = 400;
 
     private SearchListener listener;
 
@@ -56,13 +56,8 @@ public class SearchToolbar extends ConstraintLayout {
                 (int) (anchorView.getY() + anchorView.getWidth() / 2.0f),
                 0,
                 getWidth())
-                .setDuration(SHOW_HIDE_ANIMATION_DURATION);
-        animator.addListener(new AnimationCompleteListener() {
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                ViewUtil.showKeyboard(query);
-            }
-        });
+                .setDuration(ANIMATION_DURATION);
+        animator.addListener((AnimationCompleteListener) animator1 -> ViewUtil.showKeyboard(query));
         animator.start();
     }
 
@@ -76,13 +71,10 @@ public class SearchToolbar extends ConstraintLayout {
                 (int) (anchorView.getY() + anchorView.getWidth() / 2.0f),
                 getWidth(),
                 0)
-                .setDuration(SHOW_HIDE_ANIMATION_DURATION);
-        animator.addListener(new AnimationCompleteListener() {
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                setVisibility(INVISIBLE);
-                if (listener != null) listener.onSearchClose();
-            }
+                .setDuration(ANIMATION_DURATION);
+        animator.addListener((AnimationCompleteListener) animator1 -> {
+            setVisibility(INVISIBLE);
+            if (listener != null) listener.onSearchClose();
         });
         animator.start();
     }
