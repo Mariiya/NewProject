@@ -23,8 +23,6 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
     @Inject
     TrackRepository trackRepository;
 
-    private TrackModel trackModel;
-
     private ImageView albumCover;
     private TextView trackName;
     private TextView artistPlusAlbumName;
@@ -33,15 +31,8 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
 
     @Override
     protected void initViews() {
-        ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
+        ((BaseActivity) getActivity()).initToolbar("Track information", true);
         audioPlayer.setShowingInformationFragment((ShowingInformationFragment) getActivity());
-
-        ViewUtil.loadImage(albumCover, trackModel.getAlbumCoverBigUrl(), R.drawable.ic_audiotrack_24);
-        trackName.setText(trackModel.getTrackName());
-        String artistAndAlbumName = trackModel.getArtistName() + " - " + trackModel.getAlbumName();
-        artistPlusAlbumName.setText(artistAndAlbumName);
-
-        audioPlayer.setTrackUrl(trackModel.getTrackPreviewUrl());
     }
 
     @Override
@@ -60,7 +51,19 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
         if (getArguments() != null) {
             trackId = getArguments().getLong(Constants.BUNDLE_TRACK_ID);
         }
-        trackModel = trackRepository.findTrack(trackId);
+        viewModel.init(trackId);
+        viewModel.getTrackModelLd().observe(getViewLifecycleOwner(), this::bindTrackInfo);
+    }
+
+    private void bindTrackInfo(TrackModel trackModel) {
+        ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
+
+        ViewUtil.loadImage(albumCover, trackModel.getAlbumCoverBigUrl(), R.drawable.ic_audiotrack_24);
+        trackName.setText(trackModel.getTrackName());
+        String artistAndAlbumName = trackModel.getArtistName() + " - " + trackModel.getAlbumName();
+        artistPlusAlbumName.setText(artistAndAlbumName);
+
+        audioPlayer.setTrackUrl(trackModel.getTrackPreviewUrl());
     }
 
     @Override

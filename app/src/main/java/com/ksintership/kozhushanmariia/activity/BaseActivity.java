@@ -44,16 +44,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     public void initToolbar(String title,
                             @MenuRes int menuResId,
+                            @Nullable Toolbar.OnMenuItemClickListener onMenuItemClickListener,
                             boolean navigationUp) {
         this.initToolbar(title, navigationUp);
         toolbar.getMenu().clear();
         toolbar.inflateMenu(menuResId);
+        toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
     }
 
     public void initToolbarWithSearch(String title,
                                       @MenuRes int menuResId,
+                                      @Nullable Toolbar.OnMenuItemClickListener onMenuItemClickListener,
                                       boolean navigationUp) {
-        this.initToolbar(title, menuResId, navigationUp);
+        this.initToolbar(title, menuResId, onMenuItemClickListener, navigationUp);
         searchToolbar = findViewById(R.id.search_toolbar);
         searchAction.setVisibility(View.VISIBLE);
 

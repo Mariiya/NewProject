@@ -28,11 +28,12 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         rootView = findViewById(R.id.root_view);
         progressBar = findViewById(R.id.progress_horizontal);
 
-        initToolbarWithSearch(getString(R.string.app_name), R.menu.main_menu, false);
+        initToolbarWithSearch(getString(R.string.app_name),
+                R.menu.main_menu,
+                this,
+                false);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-        initListeners();
     }
 
     @Override
@@ -51,22 +52,14 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (navController.getCurrentDestination().getId() == R.id.searchListFragment) {
-            initToolbarWithSearch(getString(R.string.app_name), R.menu.main_menu, false);
-        }
-    }
-
-    private void initListeners() {
-        getToolbar().setOnMenuItemClickListener(this);
-    }
-
-    @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 navController.navigate(R.id.toSettingsFragment);
+                toolbar.getMenu().clear();
+                return true;
+            case R.id.menu_search_history:
+                navController.navigate(R.id.toSearchHistoryFragment);
                 toolbar.getMenu().clear();
                 return true;
         }

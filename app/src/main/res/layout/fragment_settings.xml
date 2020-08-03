@@ -29,7 +29,17 @@
                 android:id="@+id/switch_save_last_search"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/setting_switch_height"
+                android:layout_marginTop="@dimen/default_middle_margin"
                 android:text="Save last search result"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switch_save_search_history"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_switch_height"
+
+                android:layout_marginTop="@dimen/default_middle_margin"
+                android:text="Save search history"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -55,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_middle_margin"
                 android:text="Version"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"

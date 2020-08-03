@@ -4,16 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/default_middle_margin"
-    android:layout_marginVertical="@dimen/default_small_margin">
+    android:background="@drawable/item_bg_selector">
+
+    <Space
+        android:id="@+id/top_space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_small_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/album_cover"
         android:layout_width="@dimen/coverSizeInList"
         android:layout_height="@dimen/coverSizeInList"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@id/bottom_space"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_space"
         tools:src="@drawable/sechsucht_cover_medium" />
 
     <TextView
@@ -26,7 +33,7 @@
         android:textAppearance="@style/TextTitleStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/album_cover"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_space"
         tools:text="Engel" />
 
     <TextView
@@ -36,9 +43,16 @@
         android:layout_marginStart="@dimen/default_middle_margin"
         android:layout_marginBottom="@dimen/default_smaller_margin"
         android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/album_cover"
         tools:text="Rammstein" />
+
+    <Space
+        android:id="@+id/bottom_space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_small_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/album_cover" />
 
 </com.ksintership.kozhushanmariia.views.TrackItemView>

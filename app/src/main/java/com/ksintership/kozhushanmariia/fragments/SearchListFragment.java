@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ksintership.kozhushanmariia.R;
+import com.ksintership.kozhushanmariia.activity.BaseActivity;
+import com.ksintership.kozhushanmariia.activity.MainActivity;
 import com.ksintership.kozhushanmariia.contract.IActivity;
 import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
 import com.ksintership.kozhushanmariia.contract.listeners.SearchListener;
@@ -41,6 +43,10 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
 
     @Override
     protected void initViews() {
+        ((BaseActivity) getActivity()).initToolbarWithSearch(getString(R.string.app_name),
+                R.menu.main_menu,
+                (MainActivity) getActivity(),
+                false);
         adapter = new TrackListAdapter(getContext(), this);
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(adapter);
@@ -69,6 +75,17 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
 
         viewModel.init(showingInfoFragment);
 
+        String historySearchQuery = null;
+        if (getArguments() != null) {
+            historySearchQuery = getArguments().getString(Constants.BUNDLE_SEARCH_QUERY);
+        }
+        if (historySearchQuery != null) {
+            onSearch(historySearchQuery);
+            getArguments().clear();
+        } else {
+            viewModel.loadCachedTrack();
+        }
+
         viewModel.getTrackListLd().observe(getViewLifecycleOwner(),
                 trackModels -> {
                     adapter.setTracks(trackModels);
@@ -77,7 +94,10 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
                     }
                 });
         viewModel.getShowErrorMessageLd().observe(getViewLifecycleOwner(),
-                showMsg -> ((ShowingInformationFragment) getActivity()).showSnackbar(R.string.search_failure));
+                showMsg -> {
+                    if (showMsg)
+                        ((ShowingInformationFragment) getActivity()).showSnackbar(R.string.search_failure);
+                });
     }
 
     @Override

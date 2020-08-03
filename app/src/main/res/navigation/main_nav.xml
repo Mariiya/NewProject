@@ -10,6 +10,10 @@
         android:name="com.ksintership.kozhushanmariia.fragments.SearchListFragment"
         android:label="fragment_note_list"
         tools:layout="@layout/fragment_search_list">
+        <argument
+            android:name="bundle_search_query"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/toSettingsFragment"
             app:destination="@id/fragmentSettings"
@@ -20,6 +24,13 @@
         <action
             android:id="@+id/toTrackDetailFragment"
             app:destination="@id/noteDetailFragment"
+            app:enterAnim="@anim/slide_from_end"
+            app:exitAnim="@anim/slide_to_start"
+            app:popEnterAnim="@anim/slide_from_start"
+            app:popExitAnim="@anim/slide_to_end" />
+        <action
+            android:id="@+id/toSearchHistoryFragment"
+            app:destination="@id/historySearchFragment"
             app:enterAnim="@anim/slide_from_end"
             app:exitAnim="@anim/slide_to_start"
             app:popEnterAnim="@anim/slide_from_start"
@@ -40,6 +51,20 @@
         <argument
             android:name="bundle_track_id"
             app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/historySearchFragment"
+        android:name="com.ksintership.kozhushanmariia.fragments.SearchHistoryFragment"
+        android:label="fragment_history_search"
+        tools:layout="@layout/fragment_history_search">
+        <action
+            android:id="@+id/onQueryClicked"
+            app:destination="@id/searchListFragment"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
+            app:popUpTo="@id/searchListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

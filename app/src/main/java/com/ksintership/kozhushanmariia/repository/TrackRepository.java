@@ -14,6 +14,7 @@ public interface TrackRepository {
     @Nullable
     List<TrackModel> searchTracks(String query, ApiOnFailureCallback callback);
 
+    @WorkerThread
     @Nullable
     List<TrackModel> getCachedTracks();
 

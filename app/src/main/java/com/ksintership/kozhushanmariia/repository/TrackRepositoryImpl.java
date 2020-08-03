@@ -6,29 +6,41 @@ import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
 import com.ksintership.kozhushanmariia.contract.ApiOnFailureCallback;
-import com.ksintership.kozhushanmariia.model.RestTrackToTrackMapper;
+import com.ksintership.kozhushanmariia.database.TrackDao;
+import com.ksintership.kozhushanmariia.model.EntityTrack;
+import com.ksintership.kozhushanmariia.model.EntityTrackMapper;
+import com.ksintership.kozhushanmariia.model.RestTrackMapper;
 import com.ksintership.kozhushanmariia.model.TrackModel;
 import com.ksintership.kozhushanmariia.rest.DeezerResponse;
 import com.ksintership.kozhushanmariia.rest.RestApiService;
+import com.ksintership.kozhushanmariia.utils.PreferencesManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Response;
 
 public class TrackRepositoryImpl implements TrackRepository {
-    private RestTrackToTrackMapper mapper;
+    private RestTrackMapper restMapper;
+    private EntityTrackMapper entityMapper;
+
+    private ExecutorService executor;
 
     private RestApiService restApiService;
+    private TrackDao trackDao;
     private List<TrackModel> trackList;
 
-    private int totalCountSearchedList;
     private String linkToNext;
 
-    public TrackRepositoryImpl(RestApiService restApiService) {
+    public TrackRepositoryImpl(RestApiService restApiService, TrackDao trackDao) {
         this.restApiService = restApiService;
-        mapper = new RestTrackToTrackMapper();
+        this.trackDao = trackDao;
+        executor = Executors.newSingleThreadExecutor();
+        restMapper = new RestTrackMapper();
+        entityMapper = new EntityTrackMapper();
         trackList = new ArrayList<>();
     }
 
@@ -38,11 +50,11 @@ public class TrackRepositoryImpl implements TrackRepository {
     public List<TrackModel> searchTracks(String query, ApiOnFailureCallback callback) {
         try {
             Response<DeezerResponse> response = restApiService.search(query).execute();
-            if (response.isSuccessful() || response.body() != null) {
+            if (response.isSuccessful() && response.body() != null && response.body().getTotal() != 0) {
                 linkToNext = response.body().getLinkToNext();
-                totalCountSearchedList = response.body().getTotal();
                 trackList.clear();
-                trackList.addAll(mapper.restModelToInternalModel(response.body().getTrackList()));
+                trackList.addAll(restMapper.restToModel(response.body().getTrackList()));
+                cacheListIfNeed();
                 return trackList;
             } else if (response.errorBody() != null) {
                 Log.e(RestApiService.LOG_TAG, response.errorBody().string());
@@ -50,6 +62,7 @@ public class TrackRepositoryImpl implements TrackRepository {
             }
         } catch (IOException e) {
             Log.e(RestApiService.LOG_TAG, e.getMessage());
+            callback.onFailure(e.getMessage());
         }
         return null;
     }
@@ -57,6 +70,12 @@ public class TrackRepositoryImpl implements TrackRepository {
     @Nullable
     @Override
     public List<TrackModel> getCachedTracks() {
+        if (trackList.isEmpty()) {
+            List<EntityTrack> entityTracks = trackDao.getAll();
+            if (entityTracks != null) {
+                trackList = entityMapper.entityToModel(trackDao.getAll());
+            }
+        }
         return trackList;
     }
 
@@ -69,7 +88,8 @@ public class TrackRepositoryImpl implements TrackRepository {
             Response<DeezerResponse> response = restApiService.reloadTrackList(linkToNext).execute();
             if (response.isSuccessful() || response.body() != null) {
                 linkToNext = response.body().getLinkToNext();
-                trackList.addAll(mapper.restModelToInternalModel(response.body().getTrackList()));
+                trackList.addAll(restMapper.restToModel(response.body().getTrackList()));
+                cacheListIfNeed();
                 return trackList;
             } else if (response.errorBody() != null) {
                 Log.e(RestApiService.LOG_TAG, response.errorBody().string());
@@ -90,4 +110,14 @@ public class TrackRepositoryImpl implements TrackRepository {
         }
         return null;
     }
+
+    private void cacheListIfNeed() {
+        if (PreferencesManager.hasSaveLastSearch()) {
+            executor.execute(() -> {
+                trackDao.clear();
+                trackDao.insertAll(entityMapper.modelToEntity(trackList));
+            });
+        }
+    }
+
 }

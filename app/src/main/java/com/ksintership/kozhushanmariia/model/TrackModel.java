@@ -65,4 +65,9 @@ public class TrackModel {
             return ((TrackModel) obj).getId() == this.getId();
         } else return false;
     }
+
+    @Override
+    public int hashCode() {
+        return (int) deezerId;
+    }
 }

@@ -12,9 +12,11 @@ public class PreferencesManager {
     private final static String PREFS_NAME = "com.ksintership.kozhushanmariia.SETTINGS";
 
     private final static String SAVE_LAST_SEARCH = "save_last_search";
+    private final static String SAVE_SEARCH_HISTORY = "save_search_history";
     private final static String REPEAT_TRACK = "repeat_track";
 
     private final static boolean DEFAULT_IS_SAVE_LAST_SEARCH = true;
+    private final static boolean DEFAULT_IS_SAVE_SEARCH_HISTORY = true;
     private final static boolean DEFAULT_IS_REPEAT_TRACK = false;
 
     private static PreferencesManager instance;
@@ -29,10 +31,19 @@ public class PreferencesManager {
         return instance.getBoolean(SAVE_LAST_SEARCH, DEFAULT_IS_SAVE_LAST_SEARCH);
     }
 
-
     public static void setSaveLastSearch(boolean value) {
         confirmInstance();
         instance.setBoolean(SAVE_LAST_SEARCH, value);
+    }
+
+    public static boolean hasSaveSearchHistory() {
+        confirmInstance();
+        return instance.getBoolean(SAVE_SEARCH_HISTORY, DEFAULT_IS_SAVE_SEARCH_HISTORY);
+    }
+
+    public static void setSaveSearchHistory(boolean value) {
+        confirmInstance();
+        instance.setBoolean(SAVE_SEARCH_HISTORY, value);
     }
 
     public static boolean hasRepeatTrack() {

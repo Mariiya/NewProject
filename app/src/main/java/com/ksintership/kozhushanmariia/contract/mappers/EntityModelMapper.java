@@ -1,7 +1,13 @@
 package com.ksintership.kozhushanmariia.contract.mappers;
 
-public interface EntityModelMapper<EM, IM> {
-    IM entityModelToInternalModel(EM entityModel);
+import java.util.List;
 
-    EM internalModelToEntityModel(IM internalModel);
+public interface EntityModelMapper<EM, IM> {
+    IM entityToModel(EM entityModel);
+
+    List<IM> entityToModel(List<EM> entityModel);
+
+    EM modelToEntity(IM internalModel);
+
+    List<EM> modelToEntity(List<IM> internalModel);
 }

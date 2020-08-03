@@ -5,9 +5,9 @@ import com.ksintership.kozhushanmariia.contract.mappers.RestModelMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestTrackToTrackMapper implements RestModelMapper<TrackModelRest, TrackModel> {
+public class RestTrackMapper implements RestModelMapper<TrackModelRest, TrackModel> {
     @Override
-    public TrackModel restModelToInternalModel(TrackModelRest restModel) {
+    public TrackModel restToModel(TrackModelRest restModel) {
         return new TrackModel(restModel.id,
                 restModel.trackName,
                 restModel.album.title,
@@ -18,10 +18,10 @@ public class RestTrackToTrackMapper implements RestModelMapper<TrackModelRest, T
     }
 
     @Override
-    public List<TrackModel> restModelToInternalModel(List<TrackModelRest> listRestModel) {
+    public List<TrackModel> restToModel(List<TrackModelRest> listRestModel) {
         List<TrackModel> result = new ArrayList<>();
         for (TrackModelRest restModel : listRestModel) {
-            result.add(restModelToInternalModel(restModel));
+            result.add(restToModel(restModel));
         }
         return result;
     }

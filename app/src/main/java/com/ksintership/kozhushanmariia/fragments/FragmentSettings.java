@@ -12,6 +12,7 @@ import com.ksintership.kozhushanmariia.utils.PreferencesManager;
 
 public class FragmentSettings extends BaseFragment<ViewModel> {
     private Switch switchSaveLastSearch;
+    private Switch switchSaveSearchHistory;
 
     @Override
     protected int getFragmentLayout() {
@@ -21,6 +22,7 @@ public class FragmentSettings extends BaseFragment<ViewModel> {
     @Override
     protected void findViews(View root) {
         switchSaveLastSearch = rootView.findViewById(R.id.switch_save_last_search);
+        switchSaveSearchHistory = rootView.findViewById(R.id.switch_save_search_history);
     }
 
     @Override
@@ -30,6 +32,11 @@ public class FragmentSettings extends BaseFragment<ViewModel> {
         switchSaveLastSearch.setChecked(PreferencesManager.hasSaveLastSearch());
         switchSaveLastSearch.setOnClickListener(view_ ->
                 PreferencesManager.setSaveLastSearch(switchSaveLastSearch.isChecked())
+        );
+
+        switchSaveSearchHistory.setChecked(PreferencesManager.hasSaveSearchHistory());
+        switchSaveSearchHistory.setOnClickListener(view_ ->
+                PreferencesManager.setSaveSearchHistory(switchSaveSearchHistory.isChecked())
         );
     }
 

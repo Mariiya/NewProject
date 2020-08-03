@@ -4,17 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SearchListFragment">
+    tools:context=".fragments.SearchHistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/track_list"
+        android:id="@+id/history_search_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/default_small_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/track_list_item" />
+        tools:listitem="@layout/history_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
