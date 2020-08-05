@@ -2,6 +2,9 @@ package com.ksintership.kozhushanmariia.di;
 
 import android.content.Context;
 
+import com.ksintership.kozhushanmariia.contract.AudioPlayerService;
+import com.ksintership.kozhushanmariia.utils.AudioPlayerServiceImpl;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -19,5 +22,11 @@ public class AppModule {
     @Singleton
     public Context provideContext() {
         return this.context;
+    }
+
+    @Provides
+    @Singleton
+    public AudioPlayerService provideAudioPlayerService(Context context) {
+        return new AudioPlayerServiceImpl(context);
     }
 }

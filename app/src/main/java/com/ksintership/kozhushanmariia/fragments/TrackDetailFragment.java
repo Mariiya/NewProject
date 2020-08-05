@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.activity.BaseActivity;
+import com.ksintership.kozhushanmariia.contract.AudioPlayerService;
 import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
 import com.ksintership.kozhushanmariia.di.AppInjector;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
@@ -14,25 +15,29 @@ import com.ksintership.kozhushanmariia.repository.TrackRepository;
 import com.ksintership.kozhushanmariia.utils.Constants;
 import com.ksintership.kozhushanmariia.utils.ViewUtil;
 import com.ksintership.kozhushanmariia.viewmodels.TrackDetailViewModel;
-import com.ksintership.kozhushanmariia.views.AudioPlayer;
+import com.ksintership.kozhushanmariia.views.AudioPlayerView;
 
 import javax.inject.Inject;
 
-public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
+public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> implements AudioPlayerService.Listener {
 
     @Inject
     TrackRepository trackRepository;
+    @Inject
+    AudioPlayerService audioPlayerService;
+
+    private ShowingInformationFragment informationFragment;
 
     private ImageView albumCover;
     private TextView trackName;
     private TextView artistPlusAlbumName;
 
-    private AudioPlayer audioPlayer;
+    private AudioPlayerView audioPlayer;
 
     @Override
     protected void initViews() {
         ((BaseActivity) getActivity()).initToolbar("Track information", true);
-        audioPlayer.setShowingInformationFragment((ShowingInformationFragment) getActivity());
+        bindTrackInfo(audioPlayerService.getCurrentTrack());
     }
 
     @Override
@@ -47,16 +52,21 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
     protected void init() {
         super.init();
         AppInjector.getAppComponent().inject(this);
-        long trackId = -1L;
+        audioPlayerService.setListener(this);
+        informationFragment = (ShowingInformationFragment) getActivity();
+        long trackId = 0;
         if (getArguments() != null) {
             trackId = getArguments().getLong(Constants.BUNDLE_TRACK_ID);
+            getArguments().clear();
         }
         viewModel.init(trackId);
         viewModel.getTrackModelLd().observe(getViewLifecycleOwner(), this::bindTrackInfo);
     }
 
     private void bindTrackInfo(TrackModel trackModel) {
-        ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
+        if (trackModel == null) return;
+        if (((BaseActivity) getActivity()) != null)
+            ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
 
         ViewUtil.loadImage(albumCover, trackModel.getAlbumCoverBigUrl(), R.drawable.ic_audiotrack_24);
         trackName.setText(trackModel.getTrackName());
@@ -64,6 +74,36 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> {
         artistPlusAlbumName.setText(artistAndAlbumName);
 
         audioPlayer.setTrackUrl(trackModel.getTrackPreviewUrl());
+    }
+
+    @Override
+    public void onStartPreparation() {
+        audioPlayer.onStartPreparation();
+        informationFragment.showProgressBar();
+    }
+
+    @Override
+    public void onTrackPrepared() {
+        audioPlayer.onTrackPrepared();
+        informationFragment.hideProgressBar();
+    }
+
+    @Override
+    public void onPrepareFailed() {
+        audioPlayer.onPrepareFailed();
+        informationFragment.showSnackbar(R.string.audio_player_error);
+    }
+
+    @Override
+    public void onTrackChanged(TrackModel currentTrack) {
+        audioPlayer.onTrackChanged(currentTrack);
+        if (viewModel.getTrackModelLd().getValue() == currentTrack) return;
+        bindTrackInfo(currentTrack);
+    }
+
+    @Override
+    public void onEndQueue() {
+        audioPlayer.onEndQueue();
     }
 
     @Override

@@ -17,4 +17,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/track_list_item" />
 
+    <include
+        android:id="@+id/player_view"
+        layout="@layout/floating_audio_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

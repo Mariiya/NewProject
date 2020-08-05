@@ -11,20 +11,21 @@ import javax.inject.Inject;
 public class PreferencesManager {
     private final static String PREFS_NAME = "com.ksintership.kozhushanmariia.SETTINGS";
 
+    // PREFS KEYS
+
     private final static String SAVE_LAST_SEARCH = "save_last_search";
     private final static String SAVE_SEARCH_HISTORY = "save_search_history";
-    private final static String REPEAT_TRACK = "repeat_track";
 
+    // AUDIO PLAYER PREFS
+    private final static String REPEAT_TRACK = "repeat_track_new_key";
+    private final static String SHUFFLE_PLAY = "shuffle_play";
+
+    // DEFAULT VALUES
     private final static boolean DEFAULT_IS_SAVE_LAST_SEARCH = true;
     private final static boolean DEFAULT_IS_SAVE_SEARCH_HISTORY = true;
-    private final static boolean DEFAULT_IS_REPEAT_TRACK = false;
 
-    private static PreferencesManager instance;
-
-    @Inject
-    Context context;
-
-    private SharedPreferences prefs;
+    private final static int DEFAULT_IS_REPEAT_TRACK = RepeatTrackPref.NOT_REPEAT.toInt();
+    private final static boolean DEFAULT_IS_SHUFFLE_PLAY = false;
 
     public static boolean hasSaveLastSearch() {
         confirmInstance();
@@ -46,15 +47,34 @@ public class PreferencesManager {
         instance.setBoolean(SAVE_SEARCH_HISTORY, value);
     }
 
-    public static boolean hasRepeatTrack() {
+    // AUDIO PLAYER PREFS
+    public static RepeatTrackPref getRepeatTrack() {
         confirmInstance();
-        return instance.getBoolean(REPEAT_TRACK, DEFAULT_IS_REPEAT_TRACK);
+        return RepeatTrackPref.fromInt(instance.getInt(REPEAT_TRACK, DEFAULT_IS_REPEAT_TRACK));
     }
 
-    public static void setRepeatTrack(boolean value) {
+    public static void setRepeatTrack(RepeatTrackPref value) {
         confirmInstance();
-        instance.setBoolean(REPEAT_TRACK, value);
+        instance.setInteger(REPEAT_TRACK, value.toInt());
     }
+
+    public static boolean hasShufflePlay() {
+        confirmInstance();
+        return instance.getBoolean(SHUFFLE_PLAY, DEFAULT_IS_SHUFFLE_PLAY);
+    }
+
+    public static void setShufflePlay(boolean value) {
+        confirmInstance();
+        instance.setBoolean(SHUFFLE_PLAY, value);
+    }
+    // AUDIO PLAYER PREFS END
+
+    private static PreferencesManager instance;
+
+    @Inject
+    Context context;
+
+    private SharedPreferences prefs;
 
     private static void confirmInstance() {
         if (instance == null) instance = new PreferencesManager();
@@ -72,6 +92,14 @@ public class PreferencesManager {
 
     private boolean getBoolean(String key, boolean defaultValue) {
         return prefs.getBoolean(key, defaultValue);
+    }
+
+    private void setInteger(String key, int value) {
+        prefs.edit().putInt(key, value).apply();
+    }
+
+    private int getInt(String key, int defaultValue) {
+        return prefs.getInt(key, defaultValue);
     }
 
 }

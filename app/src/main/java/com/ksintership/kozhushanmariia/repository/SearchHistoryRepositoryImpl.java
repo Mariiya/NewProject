@@ -22,6 +22,8 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
 
     private List<SearchHistoryModel> historyList;
 
+    private boolean isCachedInRAM = false;
+
     public SearchHistoryRepositoryImpl(SearchHistoryDao historyDao) {
         this.historyDao = historyDao;
         historyList = new ArrayList<>();
@@ -37,12 +39,13 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
             historyDao.clear();
             return null;
         }
-        if (historyList.isEmpty()) {
+        if (!isCachedInRAM) {
             List<EntitySearchHistory> entityList = historyDao.getAll();
             if (entityList == null || entityList.isEmpty()) {
                 return null;
             }
             historyList = mapper.entityToModel(entityList);
+            isCachedInRAM = true;
         }
         return historyList;
     }

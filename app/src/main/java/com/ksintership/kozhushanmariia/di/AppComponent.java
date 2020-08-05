@@ -6,12 +6,17 @@ import com.ksintership.kozhushanmariia.utils.PreferencesManager;
 import com.ksintership.kozhushanmariia.viewmodels.HistorySearchViewModel;
 import com.ksintership.kozhushanmariia.viewmodels.SearchListViewModel;
 import com.ksintership.kozhushanmariia.viewmodels.TrackDetailViewModel;
+import com.ksintership.kozhushanmariia.views.AudioPlayerView;
+import com.ksintership.kozhushanmariia.views.FloatingAudioPlayerView;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {AppModule.class, RepositoryModule.class})
+@Component(modules = {
+        AppModule.class,
+        RepositoryModule.class,
+        RestModule.class})
 @Singleton
 public interface AppComponent {
     //Fragments
@@ -28,4 +33,8 @@ public interface AppComponent {
 
 
     void inject(PreferencesManager preferencesManager);
+
+    void inject(AudioPlayerView audioPlayerView);
+
+    void inject(FloatingAudioPlayerView floatingAudioPlayerView);
 }

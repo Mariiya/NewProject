@@ -29,6 +29,13 @@
             app:popEnterAnim="@anim/slide_from_start"
             app:popExitAnim="@anim/slide_to_end" />
         <action
+            android:id="@+id/toTrackDetailFragmentWithSlideTopAnim"
+            app:destination="@id/noteDetailFragment"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom" />
+        <action
             android:id="@+id/toSearchHistoryFragment"
             app:destination="@id/historySearchFragment"
             app:enterAnim="@anim/slide_from_end"

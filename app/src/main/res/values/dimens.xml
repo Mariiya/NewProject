@@ -15,6 +15,7 @@
     <dimen name="coverSizeInList">48dp</dimen>
     <dimen name="coverSizeInDetailFragment">256dp</dimen>
 
-    <dimen name="mainPlayersButtonsSize">64dp</dimen>
+    <dimen name="PlayButtonSize">72dp</dimen>
+    <dimen name="nextPreviousButtonSize">54dp</dimen>
     <dimen name="additionalPlayersButtonsSize">32dp</dimen>
 </resources>
