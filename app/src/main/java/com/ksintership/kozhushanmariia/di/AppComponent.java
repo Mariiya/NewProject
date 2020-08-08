@@ -2,10 +2,10 @@ package com.ksintership.kozhushanmariia.di;
 
 import com.ksintership.kozhushanmariia.fragments.SearchListFragment;
 import com.ksintership.kozhushanmariia.fragments.TrackDetailFragment;
+import com.ksintership.kozhushanmariia.presenter.SearchHistoryPresenter;
+import com.ksintership.kozhushanmariia.presenter.SearchListPresenter;
+import com.ksintership.kozhushanmariia.presenter.TrackDetailPresenter;
 import com.ksintership.kozhushanmariia.utils.PreferencesManager;
-import com.ksintership.kozhushanmariia.viewmodels.HistorySearchViewModel;
-import com.ksintership.kozhushanmariia.viewmodels.SearchListViewModel;
-import com.ksintership.kozhushanmariia.viewmodels.TrackDetailViewModel;
 import com.ksintership.kozhushanmariia.views.AudioPlayerView;
 import com.ksintership.kozhushanmariia.views.FloatingAudioPlayerView;
 
@@ -24,12 +24,12 @@ public interface AppComponent {
 
     void inject(TrackDetailFragment trackDetailFragment);
 
-    //ViewModels
-    void inject(SearchListViewModel searchListViewModel);
+    //Presenters
+    void inject(SearchListPresenter searchListPresenter);
 
-    void inject(TrackDetailViewModel trackDetailViewModel);
+    void inject(TrackDetailPresenter trackDetailPresenter);
 
-    void inject(HistorySearchViewModel historySearchViewModel);
+    void inject(SearchHistoryPresenter searchHistoryPresenter);
 
 
     void inject(PreferencesManager preferencesManager);

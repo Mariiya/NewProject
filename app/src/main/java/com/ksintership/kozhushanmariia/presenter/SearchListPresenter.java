@@ -1,10 +1,8 @@
-package com.ksintership.kozhushanmariia.viewmodels;
+package com.ksintership.kozhushanmariia.presenter;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
 import com.ksintership.kozhushanmariia.di.AppInjector;
 import com.ksintership.kozhushanmariia.model.SearchHistoryModel;
 import com.ksintership.kozhushanmariia.model.TrackModel;
@@ -18,7 +16,7 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-public class SearchListViewModel extends ViewModel {
+public class SearchListPresenter implements SearchListContract.Presenter {
 
     @Inject
     TrackRepository trackRepository;
@@ -28,25 +26,52 @@ public class SearchListViewModel extends ViewModel {
 
     private ExecutorService executor;
 
-    private ShowingInformationFragment showingInfoFragment;
+    private SearchListContract.View view;
 
     private MutableLiveData<List<TrackModel>> trackList;
-    private MutableLiveData<Boolean> showErrorMessage;
 
     private String lastQuery = "";
 
-    public void init(ShowingInformationFragment showingInfoFragment) {
-        this.showingInfoFragment = showingInfoFragment;
-
+    public SearchListPresenter() {
         AppInjector.getAppComponent().inject(this);
 
         executor = Executors.newSingleThreadExecutor();
 
         trackList = new MutableLiveData<>();
-        showErrorMessage = new MutableLiveData<>(false);
     }
 
-    public void loadCachedTrack() {
+    @Override
+    public void attach(SearchListContract.View view) {
+        this.view = view;
+    }
+
+    public void search(String query) {
+        if (query.equals(lastQuery)) return;
+        view.showProgressBar();
+        lastQuery = query;
+        executor.execute(() -> {
+            trackList.postValue(trackRepository.searchTracks(query, (msg) -> {
+                view.onSearchError();
+                lastQuery = null;
+            }));
+            if (view != null) view.hideProgressBar();
+        });
+        historyRepository.add(new SearchHistoryModel(query, System.currentTimeMillis()));
+    }
+
+    public void reloadTrackList() {
+        view.showProgressBar();
+        executor.execute(() -> {
+            List<TrackModel> reloadedTrackList = trackRepository.reloadTrackList();
+            if (reloadedTrackList != null) {
+                trackList.postValue(reloadedTrackList);
+            }
+            if (view != null) view.hideProgressBar();
+        });
+    }
+
+    @Override
+    public void loadCachedData() {
         if (PreferencesManager.hasSaveLastSearch()) {
             executor.execute(() -> {
                 trackList.postValue(trackRepository.getCachedTracks());
@@ -54,38 +79,20 @@ public class SearchListViewModel extends ViewModel {
         }
     }
 
-    public void search(String query) {
-        if (query.equals(lastQuery)) return;
-        showingInfoFragment.showProgressBar();
-        lastQuery = query;
-        executor.execute(() -> {
-            trackList.postValue(trackRepository.searchTracks(query, (msg) -> {
-                showErrorMessage.postValue(true);
-                lastQuery = null;
-            }));
-            showingInfoFragment.hideProgressBar();
-        });
-        historyRepository.add(new SearchHistoryModel(query, System.currentTimeMillis()));
-    }
-
-    public void reloadTrackList() {
-        showingInfoFragment.showProgressBar();
-        executor.execute(() -> {
-            List<TrackModel> reloadedTrackList = trackRepository.reloadTrackList();
-            if (reloadedTrackList != null) {
-                trackList.postValue(reloadedTrackList);
-            }
-            showingInfoFragment.hideProgressBar();
-        });
-    }
-
     public LiveData<List<TrackModel>> getTrackListLd() {
         return trackList;
     }
 
-    public LiveData<Boolean> getShowErrorMessageLd() {
-        return showErrorMessage;
+    @Override
+    public void detach() {
+        view = null;
     }
 
+    @Override
+    public void clear() {
+        executor.shutdownNow();
+        executor = null;
+        trackList = null;
+    }
 
 }

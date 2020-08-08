@@ -11,15 +11,17 @@ import com.ksintership.kozhushanmariia.contract.ShowingInformationFragment;
 import com.ksintership.kozhushanmariia.di.AppInjector;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
 import com.ksintership.kozhushanmariia.model.TrackModel;
+import com.ksintership.kozhushanmariia.presenter.TrackDetailContract;
 import com.ksintership.kozhushanmariia.repository.TrackRepository;
 import com.ksintership.kozhushanmariia.utils.Constants;
 import com.ksintership.kozhushanmariia.utils.ViewUtil;
-import com.ksintership.kozhushanmariia.viewmodels.TrackDetailViewModel;
 import com.ksintership.kozhushanmariia.views.AudioPlayerView;
 
 import javax.inject.Inject;
 
-public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> implements AudioPlayerService.Listener {
+public class TrackDetailFragment extends BaseFragment<TrackDetailContract.Presenter>
+        implements TrackDetailContract.View,
+        AudioPlayerService.Listener {
 
     @Inject
     TrackRepository trackRepository;
@@ -59,13 +61,13 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> impl
             trackId = getArguments().getLong(Constants.BUNDLE_TRACK_ID);
             getArguments().clear();
         }
-        viewModel.init(trackId);
-        viewModel.getTrackModelLd().observe(getViewLifecycleOwner(), this::bindTrackInfo);
+        presenter.loadTrackModel(trackId);
+        presenter.getTrackModelLd().observe(getViewLifecycleOwner(), this::bindTrackInfo);
     }
 
     private void bindTrackInfo(TrackModel trackModel) {
         if (trackModel == null) return;
-        if (((BaseActivity) getActivity()) != null)
+        if (getActivity() != null)
             ((BaseActivity) getActivity()).initToolbar(trackModel.getTrackName(), true);
 
         ViewUtil.loadImage(albumCover, trackModel.getAlbumCoverBigUrl(), R.drawable.ic_audiotrack_24);
@@ -97,18 +99,12 @@ public class TrackDetailFragment extends BaseFragment<TrackDetailViewModel> impl
     @Override
     public void onTrackChanged(TrackModel currentTrack) {
         audioPlayer.onTrackChanged(currentTrack);
-        if (viewModel.getTrackModelLd().getValue() == currentTrack) return;
         bindTrackInfo(currentTrack);
     }
 
     @Override
-    public void onEndQueue() {
-        audioPlayer.onEndQueue();
-    }
-
-    @Override
-    protected Class getViewModelClass() {
-        return TrackDetailViewModel.class;
+    protected Class<TrackDetailContract.Presenter> getPresenterClass() {
+        return TrackDetailContract.Presenter.class;
     }
 
     @Override

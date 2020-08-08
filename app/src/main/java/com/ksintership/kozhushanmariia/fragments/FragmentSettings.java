@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModel;
 import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.activity.BaseActivity;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
+import com.ksintership.kozhushanmariia.presenter.Presenter;
 import com.ksintership.kozhushanmariia.utils.PreferencesManager;
 
-public class FragmentSettings extends BaseFragment<ViewModel> {
+public class FragmentSettings extends BaseFragment<Presenter> {
     private Switch switchSaveLastSearch;
     private Switch switchSaveSearchHistory;
 
@@ -41,7 +42,7 @@ public class FragmentSettings extends BaseFragment<ViewModel> {
     }
 
     @Override
-    protected Class<ViewModel> getViewModelClass() {
+    protected Class<Presenter> getPresenterClass() {
         return null;
     }
 }

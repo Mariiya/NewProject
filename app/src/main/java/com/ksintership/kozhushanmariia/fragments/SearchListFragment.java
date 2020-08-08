@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,14 +20,17 @@ import com.ksintership.kozhushanmariia.contract.listeners.SearchListener;
 import com.ksintership.kozhushanmariia.di.AppInjector;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
 import com.ksintership.kozhushanmariia.model.TrackModel;
+import com.ksintership.kozhushanmariia.presenter.SearchListContract;
 import com.ksintership.kozhushanmariia.utils.Constants;
 import com.ksintership.kozhushanmariia.utils.adapter.TrackListAdapter;
-import com.ksintership.kozhushanmariia.viewmodels.SearchListViewModel;
 import com.ksintership.kozhushanmariia.views.FloatingAudioPlayerView;
 
 import javax.inject.Inject;
 
-public class SearchListFragment extends BaseFragment<SearchListViewModel> implements SearchListener, TrackListAdapter.OnTrackItemClickListener {
+public class SearchListFragment extends BaseFragment<SearchListContract.Presenter>
+        implements SearchListContract.View,
+        SearchListener,
+        TrackListAdapter.OnTrackItemClickListener {
 
     @Inject
     AudioPlayerService audioPlayerService;
@@ -69,7 +73,7 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (manager.findLastVisibleItemPosition() == manager.getItemCount() - 4) {
-                    viewModel.reloadTrackList();
+                    presenter.reloadTrackList();
                 }
             }
         });
@@ -92,8 +96,6 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
 
         iActivity.setSearchListener(this);
 
-        viewModel.init(showingInfoFragment);
-
         String historySearchQuery = null;
         if (getArguments() != null) {
             historySearchQuery = getArguments().getString(Constants.BUNDLE_SEARCH_QUERY);
@@ -102,21 +104,18 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
             onSearch(historySearchQuery);
             getArguments().clear();
         } else {
-            viewModel.loadCachedTrack();
+            presenter.loadCachedData();
         }
 
-        viewModel.getTrackListLd().observe(getViewLifecycleOwner(),
+        presenter.getTrackListLd().observe(getViewLifecycleOwner(),
                 trackModels -> {
                     adapter.setTracks(trackModels);
-                    audioPlayerService.setTrackQueue(trackModels);
+                    if (trackModels != null && !trackModels.isEmpty()) {
+                        audioPlayerService.setTrackQueue(trackModels);
+                    }
                     if (trackModels == null) {
                         //TODO: realize view stub for empty list
                     }
-                });
-        viewModel.getShowErrorMessageLd().observe(getViewLifecycleOwner(),
-                showMsg -> {
-                    if (showMsg)
-                        ((ShowingInformationFragment) getActivity()).showSnackbar(R.string.search_failure);
                 });
     }
 
@@ -131,7 +130,7 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
 
     @Override
     public void onSearch(String query) {
-        viewModel.search(query);
+        presenter.search(query);
     }
 
     @Override
@@ -140,7 +139,23 @@ public class SearchListFragment extends BaseFragment<SearchListViewModel> implem
     }
 
     @Override
-    protected Class<SearchListViewModel> getViewModelClass() {
-        return SearchListViewModel.class;
+    public void onSearchError() {
+        showingInfoFragment.showSnackbar(R.string.search_failure);
+    }
+
+    @Override
+    public void showProgressBar() {
+        showingInfoFragment.showProgressBar();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        showingInfoFragment.hideProgressBar();
+    }
+
+    @Nullable
+    @Override
+    protected Class<SearchListContract.Presenter> getPresenterClass() {
+        return SearchListContract.Presenter.class;
     }
 }

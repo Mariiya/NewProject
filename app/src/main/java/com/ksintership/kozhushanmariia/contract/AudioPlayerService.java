@@ -54,11 +54,5 @@ public interface AudioPlayerService {
         default void onPrepareFailed() { }
 
         void onTrackChanged(TrackModel currentTrack);
-
-        /**
-         * Informs that the track is last in queue
-         * e.g. for hide skip next button
-         */
-        default void onEndQueue() { }
     }
 }

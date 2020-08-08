@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ksintership.kozhushanmariia.contract.AudioPlayerService;
@@ -13,6 +14,7 @@ import com.ksintership.kozhushanmariia.model.TrackModel;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 public class AudioPlayerServiceImpl implements AudioPlayerService {
 
@@ -26,6 +28,8 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
 
     private List<TrackModel> queue;
     private TrackModel currentTrackInQueue;
+
+    private Stack<Integer> backStack = new Stack<>();
 
     private boolean isShouldPlaying;
     private boolean isPreparedTrack;
@@ -85,12 +89,14 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
     }
 
     @Override
-    public void setTrackQueue(List<TrackModel> queue) {
+    public void setTrackQueue(@NonNull List<TrackModel> queue) {
         this.queue = queue;
+        backStack.clear();
     }
 
     @Override
-    public void setTrack(TrackModel track, boolean autoPrepare) {
+    public void setTrack(@NonNull TrackModel track, boolean autoPrepare) {
+        backStack.clear();
         currentTrackInQueue = track;
         isPreparedTrack = false;
         if (autoPrepare || isShouldPlaying) {
@@ -149,24 +155,25 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
             new AssertionError("Track is not set. Initially call setTrack");
         if (queue == null)
             new AssertionError("Queue is not set. Initially call setQueue");
-        int nextTrack;
+
+        int nextTrackIndex;
+        int currentTrackIndex = queue.indexOf(currentTrackInQueue);
+        backStack.push(currentTrackIndex);
+
         if (PreferencesManager.hasShufflePlay()) {
-            nextTrack = getRandomForShuffle();
-            if (nextTrack == queue.indexOf(currentTrackInQueue)) {
-                nextTrack = getRandomForShuffle();
+            nextTrackIndex = getRandomForShuffle();
+            if (nextTrackIndex == currentTrackIndex) {
+                nextTrackIndex = getRandomForShuffle();
             }
         } else {
-            nextTrack = queue.indexOf(currentTrackInQueue) + 1;
+            nextTrackIndex = currentTrackIndex + 1;
         }
         isShouldPlaying = true;
-        if (queue.size() == nextTrack) {
+        if (queue.size() == nextTrackIndex) {
             isShouldPlaying = PreferencesManager.getRepeatTrack() == RepeatTrackPref.REPEAT_QUEUE;
-            nextTrack = 0;
+            nextTrackIndex = 0;
         }
-        if (listener != null && nextTrack == queue.size() - 1) {
-            listener.onEndQueue();
-        }
-        currentTrackInQueue = queue.get(nextTrack);
+        currentTrackInQueue = queue.get(nextTrackIndex);
         if (listener != null) {
             listener.onTrackChanged(currentTrackInQueue);
         }
@@ -179,7 +186,8 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
             new AssertionError("Track is not set. Initially call setTrack");
         if (queue == null)
             new AssertionError("Queue is not set. Initially call setQueue");
-        int previousTrack = queue.indexOf(currentTrackInQueue) - 1;
+
+        int previousTrack = backStack.isEmpty() ? queue.indexOf(currentTrackInQueue) - 1 : backStack.pop();
         if (previousTrack < 0) {
             previousTrack = queue.size() - 1;
         }

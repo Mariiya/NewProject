@@ -24,7 +24,7 @@ public class PreferencesManager {
     private final static boolean DEFAULT_IS_SAVE_LAST_SEARCH = true;
     private final static boolean DEFAULT_IS_SAVE_SEARCH_HISTORY = true;
 
-    private final static int DEFAULT_IS_REPEAT_TRACK = RepeatTrackPref.NOT_REPEAT.toInt();
+    private final static int     DEFAULT_IS_REPEAT_TRACK = RepeatTrackPref.REPEAT_QUEUE.toInt();
     private final static boolean DEFAULT_IS_SHUFFLE_PLAY = false;
 
     public static boolean hasSaveLastSearch() {

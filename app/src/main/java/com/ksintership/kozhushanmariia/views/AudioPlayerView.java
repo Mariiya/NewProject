@@ -63,16 +63,6 @@ public class AudioPlayerView extends ConstraintLayout implements AudioPlayerServ
 
     @Override
     public void onTrackChanged(TrackModel currentTrack) {
-        if (!isAvailableNextButton) {
-            isAvailableNextButton = true;
-            setNextButtonImg();
-        }
-    }
-
-    @Override
-    public void onEndQueue() {
-        isAvailableNextButton = false;
-        setNextButtonImg();
     }
 
     @Override
@@ -170,16 +160,6 @@ public class AudioPlayerView extends ConstraintLayout implements AudioPlayerServ
         seekBar.setProgress(audioPlayerService.getCurrentPosition());
         setTime(trackTimeView, audioPlayerService.getTrackDuration());
         setTime(currentTimeView, audioPlayerService.getCurrentPosition());
-    }
-
-    void setNextButtonImg() {
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_skip_next_24, getContext().getTheme());
-        if (isAvailableNextButton) {
-            drawable.setTint(Color.WHITE);
-        } else {
-            drawable.setTint(Color.GRAY);
-        }
-        nextButton.setImageDrawable(drawable);
     }
 
     private void setRepeatImg(RepeatTrackPref pref) {

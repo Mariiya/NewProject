@@ -14,14 +14,15 @@ import com.ksintership.kozhushanmariia.R;
 import com.ksintership.kozhushanmariia.activity.BaseActivity;
 import com.ksintership.kozhushanmariia.fragments.base.BaseFragment;
 import com.ksintership.kozhushanmariia.model.SearchHistoryModel;
+import com.ksintership.kozhushanmariia.presenter.SearchHistoryContract;
 import com.ksintership.kozhushanmariia.utils.Constants;
 import com.ksintership.kozhushanmariia.utils.adapter.HistoryListAdapter;
-import com.ksintership.kozhushanmariia.viewmodels.HistorySearchViewModel;
 
 import java.util.ArrayList;
 
-public class SearchHistoryFragment extends BaseFragment<HistorySearchViewModel>
-        implements HistoryListAdapter.OnHistoryItemClickListener,
+public class SearchHistoryFragment extends BaseFragment<SearchHistoryContract.Presenter>
+        implements SearchHistoryContract.View,
+        HistoryListAdapter.OnHistoryItemClickListener,
         Toolbar.OnMenuItemClickListener {
 
     private RecyclerView list;
@@ -36,8 +37,7 @@ public class SearchHistoryFragment extends BaseFragment<HistorySearchViewModel>
     @Override
     protected void init() {
         super.init();
-        viewModel.init();
-        viewModel.getSearchHistoryLd().observe(getViewLifecycleOwner(), (list) -> adapter.setList(list));
+        presenter.getSearchHistoryLd().observe(getViewLifecycleOwner(), (list) -> adapter.setList(list));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SearchHistoryFragment extends BaseFragment<HistorySearchViewModel>
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clear_history:
-                viewModel.clearSearchHistory();
+                presenter.clearSearchHistory();
                 adapter.setList(new ArrayList<>());
                 return true;
         }
@@ -68,7 +68,7 @@ public class SearchHistoryFragment extends BaseFragment<HistorySearchViewModel>
 
     @Override
     public void onClearItemClick(SearchHistoryModel model) {
-        viewModel.removeSearchHistoryModel(model);
+        presenter.removeSearchHistoryModel(model);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SearchHistoryFragment extends BaseFragment<HistorySearchViewModel>
 
     @Nullable
     @Override
-    protected Class<HistorySearchViewModel> getViewModelClass() {
-        return HistorySearchViewModel.class;
+    protected Class<SearchHistoryContract.Presenter> getPresenterClass() {
+        return SearchHistoryContract.Presenter.class;
     }
 }

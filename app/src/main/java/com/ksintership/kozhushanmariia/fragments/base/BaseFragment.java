@@ -9,16 +9,19 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
-public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
+import com.ksintership.kozhushanmariia.di.AppInjector;
+import com.ksintership.kozhushanmariia.presenter.Presenter;
+import com.ksintership.kozhushanmariia.presenter.PresenterOwner;
+
+public abstract class BaseFragment<P extends Presenter> extends Fragment
+        implements PresenterOwner {
     @LayoutRes
     protected final int fragmentLayout = getFragmentLayout();
 
     protected View rootView;
 
-    protected VM viewModel;
+    protected P presenter;
 
     @LayoutRes
     protected abstract int getFragmentLayout();
@@ -26,8 +29,9 @@ public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getViewModelClass() != null)
-            viewModel = new ViewModelProvider(this).get(getViewModelClass());
+        if (getPresenterClass() != null) {
+            presenter = AppInjector.getPresenterProvider().getPresenter(this, getPresenterClass());
+        }
     }
 
     @Nullable
@@ -40,6 +44,9 @@ public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (presenter != null) {
+            presenter.attach(this);
+        }
         init();
         findViews(rootView);
         initViews();
@@ -52,6 +59,22 @@ public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
     protected void init() {
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (presenter != null) {
+            presenter.detach();
+        }
+    }
+
+    @Override
+    public boolean isFinalDestroy() {
+        if (getActivity() == null) {
+            return true;
+        }
+        return !getActivity().isChangingConfigurations();
+    }
+
     @Nullable
-    protected abstract Class<VM> getViewModelClass();
+    protected abstract Class<P> getPresenterClass();
 }
