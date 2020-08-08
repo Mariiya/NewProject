@@ -1,5 +1,6 @@
 package com.ksintership.kozhushanmariia.di;
 
+import com.ksintership.kozhushanmariia.fragments.FragmentSettings;
 import com.ksintership.kozhushanmariia.fragments.SearchListFragment;
 import com.ksintership.kozhushanmariia.fragments.TrackDetailFragment;
 import com.ksintership.kozhushanmariia.presenter.SearchHistoryPresenter;
@@ -21,6 +22,8 @@ import dagger.Component;
 public interface AppComponent {
     //Fragments
     void inject(SearchListFragment searchListFragment);
+
+    void inject(FragmentSettings fragmentSettings);
 
     void inject(TrackDetailFragment trackDetailFragment);
 

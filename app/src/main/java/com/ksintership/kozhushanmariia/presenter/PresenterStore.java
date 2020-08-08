@@ -5,10 +5,8 @@ import androidx.annotation.Nullable;
 public interface PresenterStore {
 
     @Nullable
-    <P extends Presenter> P getPresenter(Class<P> presenterClass);
+    <P extends Presenter> P getPresenter(PresenterOwner owner, Class<P> presenterClass);
 
-    void removePresenter(Class presenter);
-
-    void putPresenter(Presenter presenter);
+    <P extends Presenter> void putPresenter(Class<P> presenterClass, PresenterOwner owner, Presenter presenter);
 
 }

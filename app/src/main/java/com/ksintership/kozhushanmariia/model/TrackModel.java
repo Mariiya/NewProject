@@ -13,6 +13,20 @@ public class TrackModel {
     private final String albumCoverBigUrl;
     private final String trackPreviewUrl;
 
+    private String localPathPreview;
+
+    public TrackModel(long deezerId,
+                      String trackName,
+                      String albumName,
+                      String artistName,
+                      String albumCoverMediumUrl,
+                      String albumCoverBigUrl,
+                      String trackPreviewUrl,
+                      String localPathPreview) {
+        this(deezerId, trackName, albumName, artistName, albumCoverMediumUrl, albumCoverBigUrl, trackPreviewUrl);
+        this.localPathPreview = localPathPreview;
+    }
+
     public TrackModel(long deezerId,
                       String trackName,
                       String albumName,
@@ -55,6 +69,18 @@ public class TrackModel {
 
     public String getTrackPreviewUrl() {
         return trackPreviewUrl;
+    }
+
+    public String getLocalPathPreview() {
+        return localPathPreview;
+    }
+
+    public void setLocalPathPreview(String localPathPreview) {
+        this.localPathPreview = localPathPreview;
+    }
+
+    public boolean hasLocalPathPreview() {
+        return localPathPreview != null;
     }
 
     @Override

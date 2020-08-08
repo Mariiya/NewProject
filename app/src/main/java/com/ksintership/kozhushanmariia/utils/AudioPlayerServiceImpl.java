@@ -1,8 +1,6 @@
 package com.ksintership.kozhushanmariia.utils;
 
-import android.content.Context;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.ksintership.kozhushanmariia.contract.AudioPlayerService;
 import com.ksintership.kozhushanmariia.model.TrackModel;
+import com.ksintership.kozhushanmariia.repository.TrackPreviewRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,8 +22,9 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
     @Nullable
     private AudioPlayerService.Listener listener;
 
+    private TrackPreviewRepository repository;
+
     private MediaPlayer mediaPlayer;
-    private Context context;
 
     private List<TrackModel> queue;
     private TrackModel currentTrackInQueue;
@@ -35,8 +35,8 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
     private boolean isPreparedTrack;
     private boolean isLoading;
 
-    public AudioPlayerServiceImpl(Context context) {
-        this.context = context;
+    public AudioPlayerServiceImpl(TrackPreviewRepository repository) {
+        this.repository = repository;
         initMediaPlayer();
     }
 
@@ -64,18 +64,46 @@ public class AudioPlayerServiceImpl implements AudioPlayerService {
     }
 
     private void prepareTrack() {
-        try {
+        if (currentTrackInQueue.hasLocalPathPreview()) {
+            setTrackInPlayer(currentTrackInQueue);
+        } else {
             if (listener != null) {
                 listener.onStartPreparation();
             }
+            repository.loadTrackPreview(currentTrackInQueue, new TrackPreviewRepository.Callback() {
+                @Override
+                public void onLoaded(TrackModel trackModel) {
+                    if (currentTrackInQueue.equals(trackModel)) {
+                        currentTrackInQueue.setLocalPathPreview(trackModel.getLocalPathPreview());
+                        setTrackInPlayer(currentTrackInQueue);
+                    }
+                }
+
+                @Override
+                public void onFailed() {
+                    if (listener != null) {
+                        listener.onPrepareFailed();
+                    }
+                }
+            });
+        }
+    }
+
+    private void setTrackInPlayer(TrackModel track) {
+        try {
             isPreparedTrack = false;
             isLoading = true;
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(context, Uri.parse(currentTrackInQueue.getTrackPreviewUrl()));
+            mediaPlayer.setDataSource(track.getLocalPathPreview());
             mediaPlayer.prepareAsync();
             mediaPlayer.setLooping(PreferencesManager.getRepeatTrack() == RepeatTrackPref.REPEAT_ONE);
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            if (track.hasLocalPathPreview()) {
+                track.setLocalPathPreview(null);
+                prepareTrack();
+                return;
+            }
+            Log.e(TAG, "setTrackInPlayer exception: " + e.getMessage());
             isLoading = false;
             if (listener != null) {
                 listener.onPrepareFailed();

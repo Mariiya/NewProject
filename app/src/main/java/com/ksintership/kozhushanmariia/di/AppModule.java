@@ -3,6 +3,7 @@ package com.ksintership.kozhushanmariia.di;
 import android.content.Context;
 
 import com.ksintership.kozhushanmariia.contract.AudioPlayerService;
+import com.ksintership.kozhushanmariia.repository.TrackPreviewRepository;
 import com.ksintership.kozhushanmariia.utils.AudioPlayerServiceImpl;
 
 import javax.inject.Singleton;
@@ -26,7 +27,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public AudioPlayerService provideAudioPlayerService(Context context) {
-        return new AudioPlayerServiceImpl(context);
+    public AudioPlayerService provideAudioPlayerService(TrackPreviewRepository repository) {
+        return new AudioPlayerServiceImpl(repository);
     }
 }

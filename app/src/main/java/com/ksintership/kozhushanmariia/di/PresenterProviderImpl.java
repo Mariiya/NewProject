@@ -24,15 +24,14 @@ public class PresenterProviderImpl implements PresenterProvider {
 
     @Override
     public <P extends Presenter> P getPresenter(PresenterOwner presenterOwner, Class<P> presenterClass) {
-        subscribeOnLifecycle(presenterOwner, presenterClass);
-        P presenter = presenterStore.getPresenter(presenterClass);
+        P presenter = presenterStore.getPresenter(presenterOwner, presenterClass);
         if (presenter == null) {
             presenter = providePresenterImplementation(presenterClass);
             if (presenter == null) {
                 throw new IllegalArgumentException("Cannot find implementation for " + presenterClass.getSimpleName()
                         + ". Add implementation in PresenterProvider#providePresenterImplementation");
             }
-            presenterStore.putPresenter(presenter);
+            presenterStore.putPresenter(presenterClass, presenterOwner, presenter);
         }
         return presenter;
     }
@@ -49,12 +48,5 @@ public class PresenterProviderImpl implements PresenterProvider {
         return null;
     }
 
-    private void subscribeOnLifecycle(PresenterOwner owner, Class presenter) {
-        owner.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
-            if (event == Lifecycle.Event.ON_DESTROY && owner.isFinalDestroy()) {
-                presenterStore.removePresenter(presenter);
-            }
-        });
-    }
 
 }

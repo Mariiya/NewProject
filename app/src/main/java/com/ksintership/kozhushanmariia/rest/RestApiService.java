@@ -1,5 +1,6 @@
 package com.ksintership.kozhushanmariia.rest;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,4 +14,7 @@ public interface RestApiService {
 
     @GET()
     Call<DeezerResponse> reloadTrackList(@Url String nextList);
+
+    @GET()
+    Call<ResponseBody> loadTrackPreview(@Url String preview);
 }
